@@ -1,1 +1,1 @@
-Веб-сервис представляет собой букмекерскую контору, позволяющую пользователям делать ставки и создавать новые события.
+Web service presents bets system allowing users to create new events and bet already existed ones.
