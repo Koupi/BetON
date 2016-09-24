@@ -1,0 +1,113 @@
+	-----REPRESENTATIONS-----
+
+EVENT SHORT REPRESENTATION
+<event>
+	<name></name>
+	<link></link>
+</event>
+
+USER SHORT REPRESENTATION
+<user>
+	<name></name>
+	<link></link>
+</user>
+
+EVENT FULL REPRESENTATION
+<event>
+	<name></name>
+	<description></description>
+	<date></date>
+	<coefficient></coefficient>
+	<users>
+		<user>
+			<name></name>
+			<link></link>
+			<bet></bet>
+		</user>
+		...
+		<user>
+			<name></name>
+			<link></link>
+			<bet></bet>
+		</user>
+	</users>
+</event>
+
+USER FULL REPRESENTATION
+<user>
+	<name></name>
+	<country></country>
+	<birthdate></birthdate>
+	<events>
+		<event short representation>
+		...
+		<event short representation>
+	</events>
+</user>
+
+EVENTS COLLECTION REPRESENTATION
+<events>
+	<event short representation>
+	...
+	<event short representation>
+</events>
+
+USERS COLLECTION REPRESENTATION
+<users>
+	<user short representation>
+	...
+	<user short representation>
+</users>
+
+	-----REQUESTS-----
+1. Get a list of all events
+GET /events
+Response: 	events collection representation
+
+2. Create a new event
+POST /events
+Response: 	201 Created or 409 Already exists
+  		event full representation
+
+3. Get full event info
+GET /events/event_id
+Response:	404 Not found or event full representation
+
+4. Bet on an event
+PUT /events/event_id
+Request:	
+	<user>
+		<bet></bet>
+	</user>
+Response:	404 Not found or event full representation
+
+5. Delete an event
+DELETE /events/event_id
+Response:	404 Not found or event full representation
+
+6. Get a list of all users
+GET /users
+Response:	users collection representation
+
+7. Create a new user
+POST /users
+Response:	201 Created or 409 Already exists
+  		event full representation
+
+8. Get full user info
+GET /users/user_id
+Response:	404 Not found or user full representation
+
+9. Change user info
+PUT /users/user_id
+Request:	
+	<user>
+		<name></name>
+		<country></country>
+		<birthdate></birthdate>
+	</user>
+Response: 	404 Not found or user full representation
+
+10. Delete a user
+DELETE /users/user_id
+Response:	404 Not found or user full representation
