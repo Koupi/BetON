@@ -57,7 +57,7 @@ be sacrificed.
 
 * Response: 	
 
-	_events_ _collection_ _representation_
+	_Events_ _collection_ _representation_
 
 ***Create a new event***
 
@@ -73,12 +73,11 @@ be sacrificed.
 ```
 
 * Response: 	
-
 		_201_ _Created_
-		
+		and
 		_Location:_ _/events/event_id_
-		
-  		_event_ _full_ _representation_
+		and
+		_Event_ _full_ _representation_
 
 ***Get full event info***
 
