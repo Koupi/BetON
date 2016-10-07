@@ -1,20 +1,25 @@
 The selected approach to the API architecture is REST. Actually not all the features of REST approach would be realised. Such constraits as self-descriptive messages and HATEOAS would be 
 be sacrificed.
 
-	-----REPRESENTATIONS-----
+### REPRESENTATIONS
 
-USER REPRESENTATION
+1. User representation
+```html
 <user>
 	<id></id>
 </user>
+```
 
-EVENT SHORT REPRESENTATION
+2. Event short representation
+```html
 <event>
 	<name></name>
 	<id></id>
 </event>
+```
 
-EVENT FULL REPRESENTATION
+3. Event full representation
+```html
 <event>
 	<name></name>
 	<id></id>
@@ -33,15 +38,18 @@ EVENT FULL REPRESENTATION
 		</user>
 	</bets>
 </event>
+```
 
-EVENTS COLLECTION REPRESENTATION
+4. Events collection representation
+```html
 <events>
 	<event short representation>
 	...
 	<event short representation>
 </events>
+```
 
-	-----REQUESTS-----
+### REQUESTS
 1. Get a list of all events
 GET /events
 Response: 	events collection representation
@@ -49,11 +57,13 @@ Response: 	events collection representation
 2. Create a new event
 POST /events
 Request:
+```html
 	<event>
 		<name></name>
 		<description></description>
 		<date></date>
 	</event>
+```
 Response: 	201 Created
 		Location: /events/event_id
   		event full representation
@@ -65,9 +75,11 @@ Response:	404 Not found or event full representation
 4. Bet on an event
 PUT /events/event_id/bets
 Request:	
+```html
 	<user>
 		<bet></bet>
 	</user>
+```
 Response:	404 Not found or event full representation
 
 5. Delete an event
