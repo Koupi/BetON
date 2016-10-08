@@ -7,6 +7,7 @@ be sacrificed.
 ```html
 <user>
 	<id></id>
+	<cash></cash>
 </user>
 ```
 
