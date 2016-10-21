@@ -101,7 +101,9 @@ be sacrificed.
 
 * Response:	
 
-	_404_ _Not_ _found_ _or_ _event_ _full_ _representation_
+	_404_ _Not_ _found_ _or_ _202_ _Accepted_
+	
+	_Event_ _short_ _representation_
 
 ***Delete an event***
 
