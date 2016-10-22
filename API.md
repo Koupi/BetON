@@ -11,6 +11,16 @@ be sacrificed.
 </user>
 ```
 
+***Bet representation***
+```html
+<bet>
+	<id></id>
+	<event_id></event_id>
+	<user_id></user_id>
+	<sum></sum>
+</bet>
+```
+
 ***Event short representation***
 ```html
 <event>
@@ -28,15 +38,13 @@ be sacrificed.
 	<date></date>
 	<coefficient></coefficient>
 	<bets>
-		<user>
+		<bet>
 			<id></id>
-			<bet></bet>
-		</user>
+		</bet>
 		...
-		<user>
+		<bet>
 			<id></id>
-			<bet></bet>
-		</user>
+		</bet>
 	</bets>
 </event>
 ```
@@ -90,20 +98,24 @@ be sacrificed.
 
 ***Bet on an event***
 
-* PUT /events/event_id/bets
+* POST /bets
 
 * Request:	
 ```html
-	<user>
-		<bet></bet>
-	</user>
+	<bet>
+		<event_id></event_id>
+		<user_id></user_id>
+		<sum></sum>
+	</bet>
 ```
 
 * Response:	
 
 	_404_ _Not_ _found_ _or_ _202_ _Accepted_
 	
-	_Event_ _short_ _representation_
+	_Location:_ _/bets/bet_id_
+	
+	_Bet_ _representation_
 
 ***Delete an event***
 
