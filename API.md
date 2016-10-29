@@ -18,6 +18,7 @@ be sacrificed.
 	<event_id></event_id>
 	<user_id></user_id>
 	<sum></sum>
+	<side></side>
 </bet>
 ```
 
@@ -36,7 +37,8 @@ be sacrificed.
 	<id></id>
 	<description></description>
 	<date></date>
-	<coefficient></coefficient>
+	<sum_side_1></sum_side_1>
+	<sum_side_2></sum_side_2>
 	<bets>
 		<bet>
 			<id></id>
@@ -106,6 +108,7 @@ be sacrificed.
 		<event_id></event_id>
 		<user_id></user_id>
 		<sum></sum>
+		<side></side>
 	</bet>
 ```
 
