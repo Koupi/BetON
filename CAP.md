@@ -2,7 +2,7 @@
 
 <h3>Description</h3>
 
-The developed system offers users to make a bet on some event. Users can see the approximate sum of all the bets of each side of the event. The sum is approximate because of its possibility to be changed while being displayed for the concrete user when other users continue making bets. It's important for the system not to loose any bet and allow all users to participate. Most users are likely to bet on during last hour before closing of an event.
+The developed system offers users to make a bet on some event. Users can see the approximate sum of all the bets on both sides. The sum is approximate because of its possibility to be changed while being displayed for the concrete user when other users continue making bets. It's important for the system not to loose any bet and allow all users to participate. Most users are likely to bet on during last hour before closing of an event.
 
 <h3>Losses</h3>
 A sacrifice of the consistency when an event is about to begin is thought to be justified. So users can see not the latest sum of bets, especially when the amount of bets is high enough. But that's not a problem because the system will consider all the bets after closing an event and charge money with a final coefficient.
