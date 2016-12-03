@@ -34,3 +34,11 @@ https://overload.yandex.net/3440
 Fourth test started from a 100 rps load rising it to 1500 rps in 30 seconds. Then the load stayed constant during 150 seconds. We got all the http codes equal to http_200 (OK). The situation with CPU and disk is also acceptable.  
 
 Results: our HelloWorld web service works fine at a load of ~1500 rps.
+
+Cumulative response time quantiles:
+
+85% < 1 ms
+
+95% < 3 ms
+
+99% < 20 ms
