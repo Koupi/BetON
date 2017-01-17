@@ -10,7 +10,34 @@
 #include <vector>
 #include <boost/lexical_cast.hpp>
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
+#include <bsoncxx/array/view.hpp>
+#include <bsoncxx/document/value.hpp>
+#include <bsoncxx/document/view.hpp>
+#include <bsoncxx/types/value.hpp>
+#include <bsoncxx/stdx/string_view.hpp>
+#include <bsoncxx/builder/stream/document.hpp>
+#include <bsoncxx/builder/stream/array.hpp>
+#include <bsoncxx/builder/stream/helpers.hpp>
+#include <bsoncxx/json.hpp>
+#include <bsoncxx/types.hpp>
+
+#include <mongocxx/client.hpp>
+#include <mongocxx/stdx.hpp>
+#include <mongocxx/uri.hpp>
+
 using namespace std;
+
+using bsoncxx::builder::stream::close_array;
+using bsoncxx::builder::stream::close_document;
+using bsoncxx::builder::stream::document;
+using bsoncxx::builder::stream::array;
+using bsoncxx::builder::stream::finalize;
+using bsoncxx::builder::stream::open_array;
+using bsoncxx::builder::stream::open_document;
 
 //curl -vX GET "http://localhost/events"
 //curl -vX GET "http://localhost/events?event_id=1"
@@ -93,6 +120,41 @@ string short_event_to_string(event e) {
 	return s;
 }
 
+class RequestHelper{
+public:
+	static string join(const vector<string>& elements, const char* const separator) {
+    		switch (elements.size()) {
+        		case 0:
+            			return "";
+        		case 1:
+            			return elements[0];
+        		default:
+            			ostringstream os; 
+            			copy(elements.begin(), elements.end()-1, ostream_iterator<string>(os, separator));
+            			os << *elements.rbegin();
+            			return os.str();
+    		}
+	}
+
+	static string convertToValidName(string name) {
+		size_t start_pos = 0;
+		const string space = " ", under = "_";
+   		while((start_pos = name.find(space, start_pos)) != string::npos) {
+        		name.replace(start_pos, space.length(), under);
+        		start_pos += under.length();
+    		}
+		return name;
+	}
+
+	static document buildEventDocumentByName(const string& name) {
+		document doc{};
+		doc << "name" << convertToValidName(name);
+		return doc;
+	}
+};
+
+
+
 class RequestHandler : virtual public fastcgi::Component, virtual public fastcgi::Handler {
 
 public:
@@ -137,7 +199,9 @@ public:
 
 		this->events_collection.push_back(e1);
 		this->events_collection.push_back(e2);
+
 		this->users_collection.push_back(u1);
+		
 		this->bets_collection.push_back(b1);
         }
 
@@ -171,7 +235,7 @@ public:
 
 #pragma mark - events requests
 	void handleGetRequest(fastcgi::Request *request, fastcgi::HandlerContext *context) {
-		fastcgi::RequestStream stream(request);
+		/*fastcgi::RequestStream stream(request);
 		if(request->countArgs() == 0) {
 			if(request->getScriptName() == "/events") {
 				request->setStatus(200);
@@ -200,7 +264,37 @@ public:
 				}
 			}
 			request->setStatus(404);
-		}			
+		}*/
+		fastcgi::RequestStream stream(request);
+		if(request->countArgs() == 0) {
+			if(request->getScriptName() == "/events") {
+				request->setStatus(200);
+				string result = "{\"events\":[";
+				mongocxx::client conn{mongocxx::uri{}};
+				auto collection = conn["beton"]["events"];
+				mongocxx::cursor cursor = collection.find(document{} << finalize);
+				vector<string> str_events;
+				for(const auto& doc : cursor) {
+  					str_events.push_back(bsoncxx::to_json(doc));
+				}
+				result.append(RequestHelper::join(str_events, ","));
+				result.append("]}");
+				stream << result << "\n";
+			}
+		} else if(request->countArgs() == 1 && request->hasArg("event_id")) {
+			string e_id = request->getArg("event_id");
+			mongocxx::client conn{mongocxx::uri{}};
+			auto collection = conn["beton"]["events"];
+			const auto& searchEvent = RequestHelper::buildEventDocumentByName(e_id) << finalize;
+			const auto& result = collection.find_one(searchEvent.view());
+    			if (result) {
+				request->setStatus(200);
+				stream << bsoncxx::to_json(*result) << "/n";
+			} else {
+				request->setStatus(404);
+				stream << "Not found./n";
+			}	
+		}
 	}
 
 	void handlePostRequest(fastcgi::Request *request, fastcgi::HandlerContext *context) {
